@@ -4,10 +4,7 @@ import { Grid } from '@mui/material';
 import SearchBox from './components/searchBox';
 import AppList from "../../components/appList";
 import {
-    allPatternItems,
-    popularApps,
-    addedApps,
-    popularWebSites
+    allPatternItems
 } from '../../assets/config';
 import IndeterminateCheckbox from '../../components/checkBox';
 import { ReactComponent as SearchIcon } from '../../assets/img/user/home/search.svg';
@@ -21,9 +18,9 @@ export default function Home(){
     const [searchKey, setSearchKey] = useState('');
     const [showSearchKey, setShowSearchKey] = useState('');
     const [showKeywordList, setShowKeywordList] = useState(false);
-    // const [popularWebSites, setPopularWebsites] = useState([]);
-    // const [addedApps, setAddedApps] = useState([]);
-    // const [popularApps, setPopularApps] = useState([]);
+    const [popularWebSites, setPopularWebsites] = useState([]);
+    const [addedApps, setAddedApps] = useState([]);
+    const [popularApps, setPopularApps] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
 
     const searchFunction = async (key) => {
@@ -34,12 +31,12 @@ export default function Home(){
         else
         {
             setShowSearchKey(true);
-            // const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/products/search?keyword=${key}`);
-            // console.log(res);
-            // if(res.data && res.data.searchResults && res.data.searchResults.length > 1)
-            //     setSearchResults(res.data.searchResults);
-            // else
-            //     setSearchResults([]);
+            const res = await axios.get(`${process.env.REACT_APP_SERVER_URL}/products/search?keyword=${key}`);
+            console.log(res);
+            if(res.data && res.data.searchResults && res.data.searchResults.length > 1)
+                setSearchResults(res.data.searchResults);
+            else
+                setSearchResults([]);
         }
     }
 
@@ -51,15 +48,15 @@ export default function Home(){
         setShowPatternList(false);
     }
 
-    // useEffect(() => {
-    //     axios.get(`${process.env.REACT_APP_SERVER_URL}/products/`)
-    //     .then(res => {
-    //         const { mobiles, recents, websites } = res.data;
-    //         setPopularApps(mobiles);
-    //         setPopularWebsites(websites);
-    //         setAddedApps(recents);
-    //     });
-    // }, []);
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_SERVER_URL}/products/`)
+        .then(res => {
+            const { mobiles, recents, websites } = res.data;
+            setPopularApps(mobiles);
+            setPopularWebsites(websites);
+            setAddedApps(recents);
+        });
+    }, []);
 
     return (
         <Styles>
